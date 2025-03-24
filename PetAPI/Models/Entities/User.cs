@@ -1,4 +1,5 @@
 ﻿using PetAPI.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace PetAPI.Models.Entities
 {
