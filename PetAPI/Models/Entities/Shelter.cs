@@ -10,5 +10,13 @@
         public string phone { get; set; }
         public string email { get; set; }
         public string openingHours { get; set; }
+
+
+        public int? UserId { get; set; }
+        public User Admin { get; set; }
+
+        public ICollection<Pet> Pets { get; set; }
+        public ICollection<ShelterSchedule> Schedule { get; set; }
+
     }
 }
