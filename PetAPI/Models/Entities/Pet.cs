@@ -16,8 +16,9 @@ namespace PetAPI.Models.Entities
         public bool goodWithKids { get; set; }
         public bool goodWithPets { get; set; }
 
-        public int shelterId { get; set; }
-        public Shelter shelter { get; set; }
+
+        public int ShelterId { get; set; }
+        public Shelter Shelter { get; set; }
 
         public ICollection<AdoptionRequest> adoptionRequests { get; set; }
     }
