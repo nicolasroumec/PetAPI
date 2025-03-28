@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using PetAPI.Models;
+using PetAPI.Repositories.Implementations;
+using PetAPI.Repositories.Interfaces;
+using PetAPI.Services.Implementations;
+using PetAPI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,13 @@ builder.Services.AddDbContext<PetContext>(options =>
     });
     options.EnableSensitiveDataLogging(true);
 });
+
+//Repositories
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+
+//Services
+builder.Services.AddScoped<IUsersService, UsersService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

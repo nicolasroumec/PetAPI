@@ -6,7 +6,7 @@ namespace PetAPI.Models.Entities
     public class User
     {
         public int Id { get; set; }
-        public string name { get; set; }
+        public string firstName { get; set; }
         public string lastName { get; set; }
         public string phone {  get; set; }
         public string dni { get; set; }

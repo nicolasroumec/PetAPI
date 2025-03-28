@@ -1,4 +1,5 @@
-﻿using PetAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PetAPI.Models;
 using PetAPI.Models.Entities;
 using PetAPI.Repositories.Interfaces;
 
@@ -10,6 +11,11 @@ namespace PetAPI.Repositories.Implementations
         {
         }
 
+        public User GetByEmail(string email)
+        {
+            return FindByCondition(u => u.email == email)
+                .FirstOrDefault();
+        }
         public void Remove(User user)
         {
             Delete(user);
