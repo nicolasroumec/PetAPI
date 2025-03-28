@@ -21,6 +21,7 @@ builder.Services.AddDbContext<PetContext>(options =>
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 //Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddControllers();
@@ -38,6 +39,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("NewPolicy");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
