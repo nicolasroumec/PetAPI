@@ -12,7 +12,6 @@ namespace PetAPI.Tools
                    String.IsNullOrEmpty(model.lastName) ||
                    String.IsNullOrEmpty(model.phone) ||
                    String.IsNullOrEmpty(model.dni);
-
         }
     }
 }
