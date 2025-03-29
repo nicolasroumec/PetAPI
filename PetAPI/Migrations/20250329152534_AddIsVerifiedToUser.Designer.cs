@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetAPI.Models;
 
@@ -11,9 +12,11 @@ using PetAPI.Models;
 namespace PetAPI.Migrations
 {
     [DbContext(typeof(PetContext))]
-    partial class PetContextModelSnapshot : ModelSnapshot
+    [Migration("20250329152534_AddIsVerifiedToUser")]
+    partial class AddIsVerifiedToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace PetAPI.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("AdoptionRequests");
+                    b.ToTable("AdoptionRequest");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.Donation", b =>
@@ -82,7 +85,7 @@ namespace PetAPI.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("Donations");
+                    b.ToTable("Donation");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.Pet", b =>
@@ -135,7 +138,7 @@ namespace PetAPI.Migrations
 
                     b.HasIndex("ShelterId");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pet");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.Shelter", b =>
@@ -179,7 +182,7 @@ namespace PetAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Shelters");
+                    b.ToTable("Shelter");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.ShelterSchedule", b =>
@@ -209,7 +212,7 @@ namespace PetAPI.Migrations
 
                     b.HasIndex("shelterId");
 
-                    b.ToTable("ShelterSchedules");
+                    b.ToTable("ShelterSchedule");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.User", b =>
@@ -257,37 +260,6 @@ namespace PetAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("PetAPI.Models.Entities.VerificationCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("expiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("VerificationCodes");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.AdoptionRequest", b =>
@@ -357,17 +329,6 @@ namespace PetAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("shelter");
-                });
-
-            modelBuilder.Entity("PetAPI.Models.Entities.VerificationCode", b =>
-                {
-                    b.HasOne("PetAPI.Models.Entities.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("PetAPI.Models.Entities.Pet", b =>

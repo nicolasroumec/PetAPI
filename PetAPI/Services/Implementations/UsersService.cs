@@ -5,6 +5,7 @@ using PetAPI.Repositories.Implementations;
 using PetAPI.Services.Interfaces;
 using PetAPI.Tools;
 using PetAPI.Models.Entities;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace PetAPI.Services.Implementations
 {
@@ -12,17 +13,23 @@ namespace PetAPI.Services.Implementations
     {
         //Declaración de dependencias
         private readonly IUsersRepository _usersRepository;
+        private readonly IVerificationCodeRepository _verificationCodeRepository;
+        private readonly IEmailService _emailService;
         private readonly Encrypter _encrypter;
 
         //Constructor que utiliza inyección de dependencias
         public UsersService(
-            IUsersRepository usersRepository)
+            IUsersRepository usersRepository,
+            IVerificationCodeRepository verificationCodeRepository,
+            IEmailService emailService)
         {
             _usersRepository = usersRepository;
+            _verificationCodeRepository = verificationCodeRepository;
+            _emailService = emailService;
             _encrypter = new Encrypter();
         }
 
-        public Response Register(RegisterDTO model)
+        public async Task<Response> Register(RegisterDTO model)
         {
             Response response = new Response();
 
@@ -54,8 +61,23 @@ namespace PetAPI.Services.Implementations
             newUser.hash = hash;
             newUser.salt = salt;
             newUser.role = Models.Enums.Role.ADOPTER;
+            newUser.isVerified = false;
 
             _usersRepository.Save(newUser);
+
+            string verificationCode = CodeGenerator.GenerateRandomCode(6);
+            VerificationCode code = new VerificationCode()
+            {
+                userId = newUser.Id,
+                code = verificationCode,
+                createdAt = DateTime.Now,
+                expiresAt = DateTime.Now.AddDays(1),
+                isUsed = false
+            };
+
+            _verificationCodeRepository.Save(code);
+
+            await _emailService.SendVerificationEmail(newUser.email, verificationCode);
 
             response.statusCode = 200;
             response.message = "Ok";

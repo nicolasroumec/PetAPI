@@ -19,13 +19,14 @@ namespace PetAPI.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult<AnyType> Register([FromBody] RegisterDTO model)
+        public async Task<ActionResult<AnyType>> Register([FromBody] RegisterDTO model)
         {
+
             Response response = new Response();
 
             try
             {
-                response = _usersService.Register(model);
+                response = await _usersService.Register(model);
                 return new JsonResult(response);
             }
             catch (Exception e)

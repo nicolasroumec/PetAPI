@@ -14,17 +14,15 @@ namespace PetAPI.Services.Implementations
             _configuration = configuration;
         }
 
-        public async Task SendVerificationEmailAsync(string email, string code)
+        public async Task SendVerificationEmail(string email, string code)
         {
             var smtpServer = _configuration["Email:SmtpServer"];
             var smtpPort = int.Parse(_configuration["Email:SmtpPort"]);
-            var smtpUsername = _configuration["Email:Username"];
-            var smtpPassword = _configuration["Email:Password"];
             var fromEmail = _configuration["Email:FromEmail"];
 
             var message = new MailMessage
             {
-                From = new MailAddress(email),
+                From = new MailAddress(fromEmail),
                 Subject = "Activate your account",
                 Body = $"<p>Your verification code is: <strong>{code}</strong></p>",
                 IsBodyHtml = true
@@ -33,8 +31,8 @@ namespace PetAPI.Services.Implementations
 
             using (var client = new SmtpClient(smtpServer, smtpPort)) 
             {
-                client.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                client.EnableSsl = true;
+                client.EnableSsl = false;
+                client.UseDefaultCredentials = true;
                 await client.SendMailAsync(message);
             }
         }

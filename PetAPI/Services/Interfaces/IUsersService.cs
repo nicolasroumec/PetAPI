@@ -5,7 +5,7 @@ namespace PetAPI.Services.Interfaces
 {
     public interface IUsersService
     {
-        public Response Register(RegisterDTO model);
+        public Task <Response> Register(RegisterDTO model);
 
     }
 }

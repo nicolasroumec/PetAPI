@@ -19,9 +19,11 @@ builder.Services.AddDbContext<PetContext>(options =>
 
 //Repositories
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
 
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IRoleVerificationService, RoleVerificationService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
