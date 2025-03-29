@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRoleVerificationService, RoleVerificationService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddControllers();

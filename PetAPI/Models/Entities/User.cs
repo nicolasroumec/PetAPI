@@ -14,6 +14,7 @@ namespace PetAPI.Models.Entities
         public byte[] hash { get; set; }
         public byte[] salt { get; set; }
         public Role role { get; set; }
+        public bool isVerified { get; set; }
 
         public ICollection<Shelter> AdministeredShelters { get; set; }
         public ICollection<AdoptionRequest> AdoptionRequests { get; set; }
