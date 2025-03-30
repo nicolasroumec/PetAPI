@@ -6,6 +6,7 @@ using PetAPI.Services.Interfaces;
 using PetAPI.Tools;
 using PetAPI.Models.Entities;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.OpenApi.Any;
 
 namespace PetAPI.Services.Implementations
 {
@@ -80,8 +81,88 @@ namespace PetAPI.Services.Implementations
             await _emailService.SendVerificationEmail(newUser.email, verificationCode);
 
             response.statusCode = 200;
-            response.message = "Ok";
+            response.message = "Registration successful. Please check your email to activate your account.";
             return response;
         }
+
+        public Response VerifyAccount(string email, string code)
+        {
+            Response response = new Response();
+
+            var user = _usersRepository.GetByEmail(email);
+
+            if (user == null)
+            {
+                response.statusCode = 404;
+                response.message = "User not found";
+                return response;
+            }
+
+            var verificationCode = _verificationCodeRepository.GetByUserIdAndCode(user.Id, code);
+
+            if (verificationCode == null)
+            {
+                response.statusCode = 400;
+                response.message = "Invalid verification code";
+                return response;
+            }
+
+            if (verificationCode.expiresAt < DateTime.Now)
+            {
+                response.statusCode = 400;
+                response.message = "Verification code has expired";
+                return response;
+            }
+
+            verificationCode.isUsed = true;
+            _verificationCodeRepository.Save(verificationCode);
+
+            user.isVerified = true;
+            _usersRepository.Save(user);
+
+            response.statusCode = 200;
+            response.message = "Account successfully verified";
+            return response;
+        }
+
+        public async Task<Response> ResendVerificationCode(string email) {
+
+            Response response = new Response();
+
+            var user = _usersRepository.GetByEmail(email);
+
+            if (user == null)
+            {
+                response.statusCode = 404;
+                response.message = "User not found";
+                return response;
+            }
+
+            if (user.isVerified)
+            {
+                response.statusCode = 400;
+                response.message = "Account already verified";
+                return response;
+            }
+
+            string verificationCode = CodeGenerator.GenerateRandomCode(6);
+            VerificationCode code = new VerificationCode()
+            {
+                userId = user.Id,
+                code = verificationCode,
+                createdAt = DateTime.Now,
+                expiresAt = DateTime.Now.AddDays(1),
+                isUsed = false
+            };
+
+            _verificationCodeRepository.Save(code);
+
+            await _emailService.SendVerificationEmail(user.email, verificationCode);
+
+            response.statusCode = 200;
+            response.message = "Verification code sent.";
+            return response;
+        }
+        
     }
 }

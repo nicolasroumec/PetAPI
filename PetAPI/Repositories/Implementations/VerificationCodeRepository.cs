@@ -13,7 +13,7 @@ namespace PetAPI.Repositories.Implementations
         public VerificationCode GetByUserIdAndCode(int userId, string code)
         {
             return FindByCondition(v => v.userId == userId && v.code == code && !v.isUsed)
-                .FirstOrDefault();
+                .FirstOrDefault() ?? new VerificationCode();
         }
 
         public void Save(VerificationCode code)

@@ -41,6 +41,13 @@ namespace PetAPI.Services.Implementations
                 return response;
             }
 
+            if (!user.isVerified)
+            {
+                response.statusCode = 403;
+                response.message = "Account not verified.";
+                return response;
+            }
+
             response.statusCode = 200;
             response.message = "Ok";
             return response;
