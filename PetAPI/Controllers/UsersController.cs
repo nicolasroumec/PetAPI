@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
@@ -17,6 +18,44 @@ namespace PetAPI.Controllers
         public UsersController(IUsersService usersService)
         {
             _usersService = usersService;
+        }
+
+        [HttpPost("changePassword")]
+        public ActionResult<AnyType> ChangePassword([FromBody] ChangePasswordDTO model)
+        {
+            Response response = new Response();
+
+            try
+            {
+                response = _usersService.ChangePassword(model);
+                return new JsonResult(response);
+            }
+            catch (Exception e)
+            {
+                response.statusCode = 500;
+                response.message = e.Message;
+                return new JsonResult(response);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("changePhone")]
+        public ActionResult<AnyType> ChangePhone([FromBody] ChangePhoneDTO model)
+        {
+            Response response = new Response();
+
+            try
+            {
+                string email = User.FindFirst("Account") != null ? User.FindFirst("Account").Value : string.Empty;
+                response = _usersService.ChangePhone(model, email);
+                return new JsonResult(response);
+            }
+            catch (Exception e)
+            {
+                response.statusCode = 500;
+                response.message = e.Message;
+                return new JsonResult(response);
+            }
         }
 
         [HttpPost("register")]
@@ -56,7 +95,7 @@ namespace PetAPI.Controllers
             }
         }
 
-        [HttpPost("resend-code")]
+        [HttpPost("resendCode")]
         public async Task<ActionResult<AnyType>> ResendVerificationCode([FromBody] ResendVerificationCodeDTO model)
         {
             Response response = new Response();

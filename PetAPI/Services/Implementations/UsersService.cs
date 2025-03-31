@@ -30,6 +30,60 @@ namespace PetAPI.Services.Implementations
             _encrypter = new Encrypter();
         }
 
+        public Response ChangePassword(ChangePasswordDTO model)
+        {
+            Response response = new Response();
+
+            var user = _usersRepository.GetByEmail(model.email);
+
+            if (user == null)
+            {
+                response.statusCode = 404;
+                response.message = "User not found";
+                return response;
+            }
+
+            if (user.phone != model.phone)
+            {
+                response.statusCode = 404;
+                response.message = "User not found";
+                return response;
+            }
+
+            Encrypter.EncryptString(model.password, out byte[] hash, out byte[] salt);
+
+            user.hash = hash;
+            user.salt = salt;
+
+            _usersRepository.Save(user);
+
+            response.statusCode = 200;
+            response.message = "Ok";
+            return response;
+        }
+
+        public Response ChangePhone(ChangePhoneDTO model, string email) 
+        { 
+            Response response = new Response();
+
+            var user = _usersRepository.GetByEmail(email);
+
+            if(user == null) 
+            {
+                response.statusCode = 404;
+                response.message = "User not found";
+                return response;
+            }
+
+            user.phone = model.phone;
+
+            _usersRepository.Save(user);
+
+            response.statusCode = 200;
+            response.message = "Ok";
+            return response;
+        }
+
         public async Task<Response> Register(RegisterDTO model)
         {
             Response response = new Response();
