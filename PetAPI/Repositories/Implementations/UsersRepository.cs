@@ -7,9 +7,7 @@ namespace PetAPI.Repositories.Implementations
 {
     public class UsersRepository : BaseRepository<User>, IUsersRepository
     {
-        public UsersRepository(PetContext repositoryContext) : base(repositoryContext)
-        {
-        }
+        public UsersRepository(PetContext repositoryContext) : base(repositoryContext){ }
 
         public User GetByEmail(string email)
         {
