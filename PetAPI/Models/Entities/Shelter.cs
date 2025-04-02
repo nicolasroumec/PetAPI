@@ -10,6 +10,7 @@
         public string phone { get; set; }
         public string email { get; set; }
         public string openingHours { get; set; }
+        public bool isApproved { get; set; }
 
 
         public int? UserId { get; set; }

@@ -12,9 +12,17 @@ namespace PetAPI.Repositories.Implementations
         public ICollection<Shelter> GetShelters()
         {
             return FindAll()
-                .Include(s => s.Schedule)  // Incluir horarios del refugio
-                .Include(s => s.Pets)      // Incluir mascotas del refugio
-                .Include(s => s.Admin)     // Incluir el administrador del refugio
+                .Include(s => s.Schedule)
+                .Include(s => s.Pets)      
+                .Include(s => s.Admin)     
+                .ToList();
+        }
+        public ICollection<Shelter> GetPending(bool isApproved)
+        {
+            return FindByCondition(s => s.isApproved == isApproved)
+                .Include(s => s.Schedule)
+                .Include(s => s.Pets)
+                .Include(s => s.Admin)
                 .ToList();
         }
         public Shelter GetById(int id)
