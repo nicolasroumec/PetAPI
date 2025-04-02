@@ -14,6 +14,7 @@ namespace PetAPI.Repositories.Implementations
             return FindByCondition(u => u.email == email)
                 .FirstOrDefault();
         }
+
         public void Remove(User user)
         {
             Delete(user);

@@ -14,19 +14,22 @@ namespace PetAPI.Services.Implementations
         private readonly IUsersRepository _usersRepository;
         private readonly IVerificationCodeRepository _verificationCodeRepository;
         private readonly IEmailService _emailService;
+        private readonly IRoleVerificationService _roleVerificationService;
         private readonly Encrypter _encrypter;
 
         public SheltersService(
             ISheltersRepository sheltersRepository,
             IUsersRepository usersRepository,
             IVerificationCodeRepository verificationCodeRepository,
-            IEmailService emailService)
+            IEmailService emailService,
+            IRoleVerificationService roleVerificationService)
         {
             _sheltersRepository = sheltersRepository;
             _usersRepository = usersRepository;
             _verificationCodeRepository = verificationCodeRepository;
             _emailService = emailService;
             _encrypter = new Encrypter();
+            _roleVerificationService = roleVerificationService;
         }
 
         public async Task<Response> Register (ShelterRegisterDTO model)
@@ -134,6 +137,89 @@ namespace PetAPI.Services.Implementations
             }
 
             response = new ResponseCollection<Shelter>(200, "Ok", shelters);
+            return response;
+        }
+
+        public Response Update (ShelterUpdateDTO model, string email)
+        {
+            Response response = new Response();
+
+            var user = _usersRepository.GetByEmail(email);
+
+            response = _roleVerificationService.VerifyShelterAdmin(user);
+
+            if(response.statusCode != 200)
+            {
+                response.statusCode = 403;
+                response.message = "Invalid credentials";
+                return response;
+            }
+
+            var shelter = _sheltersRepository.GetById(model.Id);
+
+            if(shelter == null)
+            {
+                response.statusCode = 404;
+                response.message = "Shelter not found";
+                return response;
+            }
+
+            if (shelter.email != email)
+            {
+                response.statusCode = 403;
+                response.message = "Unauthorized";
+                return response;
+            }
+
+            if (Validators.ShelterUpdateValidator(model))
+            {
+                response.statusCode = 400;
+                response.message = "Invalid form";
+                return response;
+            }
+
+            shelter.name = model.name;
+            shelter.address = model.address;
+            shelter.latitude = model.latitude;
+            shelter.longitude = model.longitude;
+            shelter.phone = model.phone;
+            shelter.email = model.email;
+
+            _sheltersRepository.Save(shelter);
+
+            response.statusCode = 200;
+            response.message = "Shelter updated successfully";
+            return response;
+        }
+
+        public Response Delete (int id, string email)
+        {
+            Response response = new Response();
+
+            var user = _usersRepository.GetByEmail(email);
+
+            response = _roleVerificationService.VerifySuperAdmin(user);
+
+            if (response.statusCode != 200)
+            {
+                response.statusCode = 403;
+                response.message = "Invalid credentials";
+                return response;
+            }
+
+            var shelter = _sheltersRepository.GetById(id);
+
+            if (shelter == null)
+            {
+                response.statusCode = 404;
+                response.message = "Shelter not found";
+                return response;
+            }
+
+            _sheltersRepository.Remove(shelter);
+
+            response.statusCode = 200;
+            response.message = "Ok";
             return response;
         }
     }

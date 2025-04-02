@@ -26,5 +26,13 @@ namespace PetAPI.Tools
                    String.IsNullOrEmpty(model.shelterPhone) ||
                    String.IsNullOrEmpty(model.shelterEmail);
         }
+        public static bool ShelterUpdateValidator(ShelterUpdateDTO model)
+        {
+            return String.IsNullOrEmpty(model.name) ||
+                   String.IsNullOrEmpty(model.address) ||
+                   String.IsNullOrEmpty(model.phone) ||
+                   String.IsNullOrEmpty(model.email);
+        }
+
     }
 }
