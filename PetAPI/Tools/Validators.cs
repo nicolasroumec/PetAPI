@@ -33,6 +33,5 @@ namespace PetAPI.Tools
                    String.IsNullOrEmpty(model.phone) ||
                    String.IsNullOrEmpty(model.email);
         }
-
     }
 }

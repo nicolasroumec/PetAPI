@@ -61,11 +61,13 @@ builder.Services.AddDbContext<PetContext>(options =>
 //Repositories
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
+builder.Services.AddScoped<ISheltersRepository, SheltersRepository>();
 
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IRoleVerificationService, RoleVerificationService>();
+builder.Services.AddScoped<ISheltersService, SheltersService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 var app = builder.Build();
