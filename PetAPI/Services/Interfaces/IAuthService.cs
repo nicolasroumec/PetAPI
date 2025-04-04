@@ -6,7 +6,8 @@ namespace PetAPI.Services.Interfaces
 {
     public interface IAuthService
     {
-        public Response Login(LoginDTO model, User user);
+        public Response LoginAdopter(LoginDTO model, User user);
+        public Response LoginShelter(LoginDTO model, User user);
         public string MakeToken(string email, string role, int minutes);
     }
 }

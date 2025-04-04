@@ -30,6 +30,14 @@ namespace PetAPI.Repositories.Implementations
             return FindByCondition(s => s.Id == id)
                 .FirstOrDefault();
         }
+        public Shelter GetByAdminId(int userId)
+        {
+            return FindByCondition(s => s.UserId == userId)
+                .Include(s => s.Schedule)
+                .Include(s => s.Pets)
+                .Include(s => s.Admin)
+                .FirstOrDefault();
+        }
         public void Remove(Shelter shelter)
         {
             Delete(shelter);

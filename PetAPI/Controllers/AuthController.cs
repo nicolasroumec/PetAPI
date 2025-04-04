@@ -23,8 +23,8 @@ namespace PetAPI.Controllers
 
         }
 
-        [HttpPost("login")]
-        public ActionResult <AnyType> Login([FromBody] LoginDTO model)
+        [HttpPost("loginAdopter")]
+        public ActionResult <AnyType> LoginAdopter([FromBody] LoginDTO model)
         {
             Response response = new Response();
 
@@ -39,7 +39,7 @@ namespace PetAPI.Controllers
 
                 User user = _userRepository.GetByEmail(model.email);
 
-                response = _authService.Login(model, user);
+                response = _authService.LoginAdopter(model, user);
 
                 if (response.statusCode != 200)
                     return new JsonResult(response);
@@ -51,6 +51,42 @@ namespace PetAPI.Controllers
                 return new JsonResult(response);
             }
             catch (Exception e) 
+            {
+                response.statusCode = 500;
+                response.message = e.Message;
+
+                return new JsonResult(response);
+            }
+        }
+
+        [HttpPost("loginShelter")]
+        public ActionResult<AnyType> LoginShelter([FromBody] LoginDTO model)
+        {
+            Response response = new Response();
+
+            try
+            {
+                if (String.IsNullOrEmpty(model.email) || String.IsNullOrEmpty(model.password))
+                {
+                    response.statusCode = 401;
+                    response.message = "Invalid form";
+                    return new JsonResult(response);
+                }
+
+                User user = _userRepository.GetByEmail(model.email);
+
+                response = _authService.LoginShelter(model, user);
+
+                if (response.statusCode != 200)
+                    return new JsonResult(response);
+
+                string token = _authService.MakeToken(user.email, user.role.ToString(), 15);
+
+                response = new ResponseModel<string>(200, "Ok", token);
+
+                return new JsonResult(response);
+            }
+            catch (Exception e)
             {
                 response.statusCode = 500;
                 response.message = e.Message;
