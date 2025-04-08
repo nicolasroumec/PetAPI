@@ -120,7 +120,7 @@ namespace PetAPI.Services.Implementations
             }
 
             var shelter = _sheltersRepository.GetByAdminId(user.Id);
-            if (shelter == null || shelter.Id != schedule.shelterId)
+            if (shelter == null)
             {
                 response.statusCode = 403;
                 response.message = "Unauthorized";
@@ -169,7 +169,7 @@ namespace PetAPI.Services.Implementations
             }
 
             var shelter = _sheltersRepository.GetByAdminId(user.Id);
-            if (shelter == null || shelter.Id != schedule.shelterId)
+            if (shelter == null)
             {
                 response.statusCode = 403;
                 response.message = "Unauthorized";
@@ -198,7 +198,7 @@ namespace PetAPI.Services.Implementations
             }
 
             var shelter = _sheltersRepository.GetByAdminId(user.Id);
-            if (shelter == null || shelter.Id != model.shelterId)
+            if (shelter == null)
             {
                 response.statusCode = 403;
                 response.message = "Unauthorized";

@@ -63,7 +63,7 @@ namespace PetAPI.Controllers
 
             try
             {
-                string email = User.FindFirst("Account") != null ? User.FindFirst("Account").Value : string.Empty;
+                string email = User.FindFirst("Account")?.Value ?? string.Empty;
                 response = _shelterScheduleService.UpdateSchedule(model, email);
                 return new JsonResult(response);
             }
@@ -83,7 +83,7 @@ namespace PetAPI.Controllers
 
             try
             {
-                string email = User.FindFirst("Account") != null ? User.FindFirst("Account").Value : string.Empty;
+                string email = User.FindFirst("Account")?.Value ?? string.Empty;
                 response = _shelterScheduleService.DeleteSchedule(id, email);
                 return new JsonResult(response);
             }
@@ -103,7 +103,7 @@ namespace PetAPI.Controllers
 
             try
             {
-                string email = User.FindFirst("Account") != null ? User.FindFirst("Account").Value : string.Empty;
+                string email = User.FindFirst("Account")?.Value ?? string.Empty;
                 response = _shelterScheduleService.SetWeekSchedule(model, email);
                 return new JsonResult(response);
             }
