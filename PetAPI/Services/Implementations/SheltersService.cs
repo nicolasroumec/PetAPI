@@ -36,19 +36,19 @@ namespace PetAPI.Services.Implementations
         {
             Response response = new Response();
 
-            if (Validators.ShelterRegisterValidator(model))
-            {
-                response.statusCode = 400;
-                response.message = "Invalid form";
-                return response;
-            }
-
             var user = _usersRepository.GetByEmail(model.email);
 
             if (user != null)
             {
                 response.statusCode = 401;
                 response.message = "Email is already in use";
+                return response;
+            }
+
+            if (Validators.ShelterRegisterValidator(model))
+            {
+                response.statusCode = 400;
+                response.message = "Invalid form";
                 return response;
             }
 

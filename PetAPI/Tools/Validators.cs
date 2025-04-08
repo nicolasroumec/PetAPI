@@ -33,5 +33,14 @@ namespace PetAPI.Tools
                    String.IsNullOrEmpty(model.phone) ||
                    String.IsNullOrEmpty(model.email);
         }
+        public static bool AddPetValidator(AddPetDTO model)
+        {
+            return String.IsNullOrEmpty(model.name) ||
+                   model.age <= 0 ||
+                   String.IsNullOrEmpty(model.breed) ||
+                   String.IsNullOrEmpty(model.healthStatus) ||
+                   String.IsNullOrEmpty(model.description) ||
+                   model.photos == null || model.photos.Count == 0;
+        }
     }
 }

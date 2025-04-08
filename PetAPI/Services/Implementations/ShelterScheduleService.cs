@@ -73,7 +73,9 @@ namespace PetAPI.Services.Implementations
             }
 
             var existingSchedules = _shelterScheduleRepository.GetSchedulesByShelter(shelter.Id);
+
             var existingSchedule = existingSchedules.FirstOrDefault(s => s.day == model.day);
+
             if (existingSchedule != null)
             {
                 response.statusCode = 400;
@@ -91,6 +93,7 @@ namespace PetAPI.Services.Implementations
             };
 
             _shelterScheduleRepository.Save(newSchedule);
+
             response.statusCode = 200;
             response.message = "Schedule added successfully";
             return response;

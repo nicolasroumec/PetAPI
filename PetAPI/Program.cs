@@ -53,6 +53,7 @@ builder.Services.AddDbContext<PetContext>(options =>
 });
 
 //Repositories
+builder.Services.AddScoped<IPetsRepository, PetsRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IShelterScheduleRepository, ShelterScheduleRepository>();
 builder.Services.AddScoped<ISheltersRepository, SheltersRepository>();
@@ -63,6 +64,7 @@ builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeReposito
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IPetsService, PetsService>();
 builder.Services.AddScoped<IRoleVerificationService, RoleVerificationService>();
 builder.Services.AddScoped<IShelterScheduleService, ShelterScheduleService>();
 builder.Services.AddScoped<ISheltersService, SheltersService>();
