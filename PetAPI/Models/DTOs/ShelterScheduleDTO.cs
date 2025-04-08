@@ -3,10 +3,9 @@
     public class ShelterScheduleDTO
     {
         public int Id { get; set; }
-        public int ShelterId { get; set; }
-        public DayOfWeek Day { get; set; }
-        public TimeSpan OpeningTime { get; set; }
-        public TimeSpan ClosingTime { get; set; }
-        public bool IsClosed { get; set; }
+        public DayOfWeek day { get; set; }
+        public TimeSpan openingTime { get; set; }
+        public TimeSpan closingTime { get; set; }
+        public bool isClosed { get; set; }
     }
 }

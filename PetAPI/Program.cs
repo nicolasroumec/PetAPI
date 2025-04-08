@@ -25,13 +25,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = "JwtScheme";
-    options.DefaultChallengeScheme = "JwtScheme";
-});
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication("JwtScheme")
     .AddJwtBearer("JwtScheme", options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -60,13 +54,17 @@ builder.Services.AddDbContext<PetContext>(options =>
 
 //Repositories
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
+builder.Services.AddScoped<IShelterScheduleRepository, ShelterScheduleRepository>();
 builder.Services.AddScoped<ISheltersRepository, SheltersRepository>();
+builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
+
+
 
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IRoleVerificationService, RoleVerificationService>();
+builder.Services.AddScoped<IShelterScheduleService, ShelterScheduleService>();
 builder.Services.AddScoped<ISheltersService, SheltersService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 

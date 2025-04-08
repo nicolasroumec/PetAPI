@@ -130,10 +130,10 @@ namespace PetAPI.Services.Implementations
         public string MakeToken(string email, string role, int minutes)
         {
             var claims = new[]
-            {
+{
                 new Claim("Account", email),
-                    new Claim("Role", role)
-                };
+                new Claim(ClaimTypes.Role, role)
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:Key").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
