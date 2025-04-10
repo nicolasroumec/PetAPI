@@ -9,7 +9,7 @@ namespace PetAPI.Repositories.Implementations
     {
         public PetsRepository(PetContext repositoryContext) : base(repositoryContext) { }
 
-        public ICollection<Pet> GetPets(int shelterId)
+        public ICollection<Pet> GetAll(int shelterId)
         {
             return FindByCondition(p => p.ShelterId == shelterId)
                 .Include(p => p.Shelter)

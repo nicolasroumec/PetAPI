@@ -4,7 +4,7 @@ namespace PetAPI.Repositories.Interfaces
 {
     public interface IPetsRepository
     {
-        ICollection<Pet> GetPets(int shelterId);
+        ICollection<Pet> GetAll(int shelterId);
         Pet GetPetById(int petId);
         void UpdateState(Pet pet);
         void Save(Pet pet);

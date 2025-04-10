@@ -42,5 +42,15 @@ namespace PetAPI.Tools
                    String.IsNullOrEmpty(model.description) ||
                    model.photos == null || model.photos.Count == 0;
         }
+        public static bool PetUpdateValidator(PetUpdateDTO model)
+        {
+            return model == null ||
+                   string.IsNullOrEmpty(model.name) ||
+                   model.age <= 0 ||
+                   string.IsNullOrEmpty(model.breed) ||
+                   string.IsNullOrEmpty(model.healthStatus) ||
+                   string.IsNullOrEmpty(model.description) ||
+                   model.photos == null || model.photos.Count == 0;
+        }
     }
 }
